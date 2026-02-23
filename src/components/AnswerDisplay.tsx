@@ -43,10 +43,10 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
               },
             }}
             transition={{
-              duration: 1.2,
+              duration: 2.0,
               ease: [0.16, 1, 0.3, 1],
-              filter: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
-              scale: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
+              filter: { duration: 2.4, ease: [0.16, 1, 0.3, 1] },
+              scale: { duration: 1.8, ease: [0.16, 1, 0.3, 1] },
             }}
             style={{
               textAlign: 'center',
@@ -59,7 +59,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.6, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -133,8 +133,8 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
                 scaleX: 1,
               }}
               transition={{
-                delay: 0.6,
-                duration: 0.6,
+                delay: 1.2,
+                duration: 0.8,
                 ease: [0.16, 1, 0.3, 1],
               }}
               style={{
@@ -150,7 +150,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ delay: 2.2, duration: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(0.65rem, 1.4vw, 0.85rem)',
