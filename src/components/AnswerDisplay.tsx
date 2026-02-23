@@ -16,7 +16,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
         justifyContent: 'center',
         pointerEvents: 'none',
         zIndex: 3,
-        padding: '2rem',
+        padding: 'clamp(1.25rem, 4vw, 2rem)',
       }}
     >
       <AnimatePresence mode="wait">
@@ -38,39 +38,40 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
               filter: 'blur(16px)',
               scale: 1.08,
               transition: {
-                duration: 0.7,
-                ease: 'easeIn',
+                duration: 0.5,
+                ease: [0.4, 0, 1, 1],
               },
             }}
             transition={{
-              duration: 1.4,
+              duration: 1.2,
               ease: [0.16, 1, 0.3, 1],
-              filter: { duration: 1.6, ease: 'easeOut' },
-              scale: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+              filter: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+              scale: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
             }}
             style={{
               textAlign: 'center',
-              maxWidth: '650px',
+              maxWidth: 'min(650px, 90vw)',
               width: '100%',
+              willChange: 'opacity, filter, transform',
             }}
           >
             {/* Top ornament */}
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+              transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '1rem',
-                marginBottom: '2rem',
+                gap: 'clamp(0.5rem, 2vw, 1rem)',
+                marginBottom: 'clamp(1.2rem, 3vw, 2rem)',
               }}
             >
               <motion.div
                 style={{
                   height: '1px',
-                  width: '50px',
+                  width: 'clamp(30px, 8vw, 50px)',
                   background: 'linear-gradient(90deg, transparent, var(--gold-mid))',
                 }}
               />
@@ -86,7 +87,8 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                 style={{
                   color: 'var(--gold-bright)',
-                  fontSize: '0.9rem',
+                  fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)',
+                  willChange: 'opacity',
                 }}
               >
                 ✦
@@ -94,7 +96,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
               <motion.div
                 style={{
                   height: '1px',
-                  width: '50px',
+                  width: 'clamp(30px, 8vw, 50px)',
                   background: 'linear-gradient(90deg, var(--gold-mid), transparent)',
                 }}
               />
@@ -104,7 +106,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
             <motion.p
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 'clamp(2.2rem, 6vw, 4rem)',
+                fontSize: 'clamp(1.8rem, 5.5vw, 4rem)',
                 fontWeight: 500,
                 lineHeight: 1.2,
                 color: 'var(--cream)',
@@ -114,6 +116,10 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
                   0 2px 4px rgba(0, 0, 0, 0.5)
                 `,
                 letterSpacing: '-0.01em',
+                padding: '0 0.5rem',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+                hyphens: 'auto',
               }}
             >
               {answer}
@@ -127,15 +133,15 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
                 scaleX: 1,
               }}
               transition={{
-                delay: 0.8,
-                duration: 0.7,
-                ease: 'easeOut',
+                delay: 0.6,
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
               }}
               style={{
                 height: '1px',
-                width: '80px',
+                width: 'clamp(50px, 12vw, 80px)',
                 background: 'linear-gradient(90deg, transparent, var(--gold-bright), transparent)',
-                margin: '2rem auto 0',
+                margin: 'clamp(1.2rem, 3vw, 2rem) auto 0',
                 filter: 'drop-shadow(0 0 8px rgba(240, 193, 75, 0.4))',
               }}
             />
@@ -144,16 +150,16 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 1 }}
+              transition={{ delay: 1.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 'clamp(0.7rem, 1.4vw, 0.85rem)',
+                fontSize: 'clamp(0.65rem, 1.4vw, 0.85rem)',
                 fontWeight: 300,
                 fontStyle: 'italic',
                 color: 'var(--text-ghost)',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                marginTop: '1.5rem',
+                marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
               }}
             >
               Press Space or click anywhere to ask again

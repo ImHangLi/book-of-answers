@@ -23,13 +23,14 @@ function createBlob(width: number, height: number, index: number): Blob {
     { hue: 25, sat: 80, light: 12, op: 0.35 },   // amber ember
   ]
   const cfg = configs[index % configs.length]
+  const minDim = Math.min(width, height)
 
   return {
     x: Math.random() * width,
     y: Math.random() * height,
     vx: (Math.random() - 0.5) * 0.25,
     vy: (Math.random() - 0.5) * 0.25,
-    radius: Math.min(width, height) * (0.3 + Math.random() * 0.25),
+    radius: minDim * (0.3 + Math.random() * 0.25),
     hue: cfg.hue + (Math.random() - 0.5) * 8,
     saturation: cfg.sat + (Math.random() - 0.5) * 10,
     lightness: cfg.light + (Math.random() - 0.5) * 4,
@@ -51,24 +52,42 @@ export default function AbstractBackground() {
     if (!ctx) return
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile = window.innerWidth < 768
 
+    // Debounced resize to avoid thrashing on mobile orientation changes
+    let resizeTimer: number
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas!.width = window.innerWidth * dpr
-      canvas!.height = window.innerHeight * dpr
-      canvas!.style.width = `${window.innerWidth}px`
-      canvas!.style.height = `${window.innerHeight}px`
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+      clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        // Cap DPR on mobile for performance
+        const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
+        canvas!.width = window.innerWidth * dpr
+        canvas!.height = window.innerHeight * dpr
+        canvas!.style.width = `${window.innerWidth}px`
+        canvas!.style.height = `${window.innerHeight}px`
+        ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      blobsRef.current = Array.from({ length: BLOB_COUNT }, (_, i) =>
-        createBlob(window.innerWidth, window.innerHeight, i)
-      )
+        blobsRef.current = Array.from({ length: BLOB_COUNT }, (_, i) =>
+          createBlob(window.innerWidth, window.innerHeight, i)
+        )
+      }, 100)
     }
 
-    resize()
+    // Initial resize without debounce
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
+    canvas.width = window.innerWidth * dpr
+    canvas.height = window.innerHeight * dpr
+    canvas.style.width = `${window.innerWidth}px`
+    canvas.style.height = `${window.innerHeight}px`
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    blobsRef.current = Array.from({ length: BLOB_COUNT }, (_, i) =>
+      createBlob(window.innerWidth, window.innerHeight, i)
+    )
+
     window.addEventListener('resize', resize)
 
     let time = 0
+    const speed = prefersReducedMotion ? 0.0005 : 0.002
 
     function animate() {
       const w = window.innerWidth
@@ -78,7 +97,7 @@ export default function AbstractBackground() {
       ctx!.fillStyle = '#030711'
       ctx!.fillRect(0, 0, w, h)
 
-      time += prefersReducedMotion ? 0.0005 : 0.002
+      time += speed
 
       // Composite blobs with screen blend for richer color mixing
       ctx!.globalCompositeOperation = 'screen'
@@ -137,6 +156,7 @@ export default function AbstractBackground() {
 
     return () => {
       cancelAnimationFrame(rafRef.current)
+      clearTimeout(resizeTimer)
       window.removeEventListener('resize', resize)
     }
   }, [])

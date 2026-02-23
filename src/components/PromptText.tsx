@@ -12,18 +12,18 @@ export default function PromptText({ visible }: PromptTextProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           style={{
             position: 'absolute',
             left: 0,
             right: 0,
-            top: '22%',
+            top: 'clamp(15%, 22%, 28%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             pointerEvents: 'none',
             zIndex: 2,
-            padding: '2rem',
+            padding: 'clamp(1rem, 4vw, 2rem)',
           }}
         >
           {/* Ornamental star */}
@@ -43,10 +43,11 @@ export default function PromptText({ visible }: PromptTextProps) {
               ease: 'easeInOut',
             }}
             style={{
-              fontSize: 'clamp(1.5rem, 3vw, 2.2rem)',
+              fontSize: 'clamp(1.2rem, 3vw, 2.2rem)',
               color: 'var(--gold-bright)',
-              marginBottom: '2.5rem',
+              marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)',
               filter: 'drop-shadow(0 0 8px rgba(240,193,75,0.4))',
+              willChange: 'opacity, transform',
             }}
           >
             ✦
@@ -64,7 +65,7 @@ export default function PromptText({ visible }: PromptTextProps) {
             }}
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+              fontSize: 'clamp(0.85rem, 2.5vw, 1.3rem)',
               fontWeight: 400,
               fontStyle: 'italic',
               color: 'var(--cream-soft)',
@@ -72,6 +73,8 @@ export default function PromptText({ visible }: PromptTextProps) {
               textTransform: 'uppercase',
               marginBottom: '0.6rem',
               textShadow: '0 0 30px rgba(240,193,75,0.15)',
+              textAlign: 'center',
+              willChange: 'opacity',
             }}
           >
             Focus on your question
@@ -94,6 +97,7 @@ export default function PromptText({ visible }: PromptTextProps) {
               height: '1px',
               background: 'linear-gradient(90deg, transparent, var(--gold-mid), transparent)',
               marginTop: '1rem',
+              willChange: 'opacity, transform',
             }}
           />
         </motion.div>

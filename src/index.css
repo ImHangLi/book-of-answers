@@ -41,10 +41,19 @@ html, body, #root {
   overflow: hidden;
 }
 
+html {
+  /* Prevent iOS bounce/overscroll */
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
   background-color: var(--bg-void);
   color: var(--cream);
+  /* Prevent pull-to-refresh on mobile */
+  overscroll-behavior-y: contain;
+  touch-action: manipulation;
 }
 
 ::selection {
@@ -94,4 +103,38 @@ input::placeholder {
 
 input:focus::placeholder {
   color: rgba(240, 193, 75, 0.15);
+}
+
+/* ---- Safe areas for notched devices ---- */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* ---- Mobile-specific tweaks ---- */
+@media (max-width: 480px) {
+  #root::after {
+    /* Softer vignette on small screens so edges aren't too dark */
+    background: radial-gradient(
+      ellipse at center,
+      transparent 35%,
+      rgba(3, 7, 17, 0.4) 65%,
+      rgba(3, 7, 17, 0.75) 100%
+    );
+  }
+}
+
+/* ---- Landscape phone ---- */
+@media (max-height: 500px) and (orientation: landscape) {
+  #root::after {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgba(3, 7, 17, 0.35) 60%,
+      rgba(3, 7, 17, 0.7) 100%
+    );
+  }
 }

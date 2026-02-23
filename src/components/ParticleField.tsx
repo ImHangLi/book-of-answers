@@ -26,16 +26,29 @@ export default function ParticleField() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
+    const isMobile = window.innerWidth < 768
+
+    let resizeTimer: number
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas!.width = window.innerWidth * dpr
-      canvas!.height = window.innerHeight * dpr
-      canvas!.style.width = `${window.innerWidth}px`
-      canvas!.style.height = `${window.innerHeight}px`
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+      clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
+        canvas!.width = window.innerWidth * dpr
+        canvas!.height = window.innerHeight * dpr
+        canvas!.style.width = `${window.innerWidth}px`
+        canvas!.style.height = `${window.innerHeight}px`
+        ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+      }, 100)
     }
 
-    resize()
+    // Initial setup without debounce
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
+    canvas.width = window.innerWidth * dpr
+    canvas.height = window.innerHeight * dpr
+    canvas.style.width = `${window.innerWidth}px`
+    canvas.style.height = `${window.innerHeight}px`
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
     window.addEventListener('resize', resize)
 
     function spawnParticle(): Particle {
@@ -52,8 +65,11 @@ export default function ParticleField() {
       }
     }
 
-    // More particles for denser field
-    const count = Math.min(60, Math.floor(window.innerWidth / 25))
+    // Fewer particles on mobile for performance
+    const count = isMobile
+      ? Math.min(30, Math.floor(window.innerWidth / 15))
+      : Math.min(60, Math.floor(window.innerWidth / 25))
+
     for (let i = 0; i < count; i++) {
       const p = spawnParticle()
       p.life = Math.random() * p.maxLife
@@ -98,8 +114,8 @@ export default function ParticleField() {
         ctx!.fillStyle = `rgba(240, 193, 75, ${alpha * 0.12})`
         ctx!.fill()
 
-        // Outer halo for bright particles
-        if (p.brightness > 0.5) {
+        // Outer halo for bright particles (skip on mobile)
+        if (!isMobile && p.brightness > 0.5) {
           ctx!.beginPath()
           ctx!.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2)
           ctx!.fillStyle = `rgba(240, 193, 75, ${alpha * 0.04})`
@@ -119,6 +135,7 @@ export default function ParticleField() {
 
     return () => {
       cancelAnimationFrame(rafRef.current)
+      clearTimeout(resizeTimer)
       window.removeEventListener('resize', resize)
     }
   }, [])

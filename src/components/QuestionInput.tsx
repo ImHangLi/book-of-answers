@@ -43,8 +43,8 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 4,
-            padding: '2rem',
-            marginTop: '4vh',
+            padding: 'clamp(1rem, 4vw, 2rem)',
+            marginTop: 'clamp(2vh, 4vh, 6vh)',
           }}
         >
           <form
@@ -54,7 +54,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
               flexDirection: 'column',
               alignItems: 'center',
               width: '100%',
-              maxWidth: '520px',
+              maxWidth: 'min(520px, 90vw)',
             }}
           >
             {/* Naked input — the typography IS the interface */}
@@ -71,7 +71,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
                 background: 'transparent',
                 border: 'none',
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 'clamp(1.4rem, 3.5vw, 2rem)',
+                fontSize: 'clamp(1.2rem, 3.5vw, 2rem)',
                 fontWeight: 300,
                 fontStyle: 'italic',
                 color: 'var(--cream)',
@@ -89,7 +89,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
                 opacity: question.length > 0 ? 1 : 0.25,
                 scaleX: question.length > 0 ? 1 : 0.4,
               }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
                 width: '100%',
                 maxWidth: question.length > 0 ? '280px' : '120px',
@@ -99,7 +99,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
                 filter: question.length > 0
                   ? 'drop-shadow(0 0 8px rgba(240, 193, 75, 0.5))'
                   : 'none',
-                transition: 'max-width 0.6s ease-out',
+                transition: 'max-width 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)',
               }}
             />
 
@@ -109,10 +109,10 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
                 animate={{
                   opacity: question.trim().length > 0 ? 0.7 : 0,
                 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
+                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
+                  fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)',
                   fontWeight: 300,
                   fontStyle: 'italic',
                   color: 'var(--gold-dim)',
