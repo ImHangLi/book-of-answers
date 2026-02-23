@@ -103,18 +103,15 @@ export default function App() {
           bottom: '1.5rem',
           right: '1.5rem',
           zIndex: 10,
-          color: 'var(--text-ghost)',
-          transition: 'color 0.3s ease, opacity 0.3s ease',
-          opacity: 0.4,
+          color: 'var(--cream-dim)',
+          transition: 'color 0.3s ease',
           lineHeight: 0,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.color = 'var(--gold-dim)'
-          e.currentTarget.style.opacity = '0.8'
+          e.currentTarget.style.color = 'var(--gold-bright)'
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.color = 'var(--text-ghost)'
-          e.currentTarget.style.opacity = '0.4'
+          e.currentTarget.style.color = 'var(--cream-dim)'
         }}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
