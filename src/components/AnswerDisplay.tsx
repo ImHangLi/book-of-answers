@@ -156,7 +156,7 @@ export default function AnswerDisplay({ answer, isVisible }: AnswerDisplayProps)
                 fontSize: 'clamp(0.65rem, 1.4vw, 0.85rem)',
                 fontWeight: 300,
                 fontStyle: 'italic',
-                color: 'var(--text-ghost)',
+                color: 'var(--cream-dim)',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',

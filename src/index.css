@@ -26,9 +26,10 @@
   /* High-contrast text */
   --cream: #faf5eb;
   --cream-soft: #f0e6d3;
-  --cream-dim: rgba(250, 245, 235, 0.55);
-  --text-ghost: rgba(250, 245, 235, 0.2);
+  --cream-dim: rgba(250, 245, 235, 0.7);
+  --text-ghost: rgba(250, 245, 235, 0.35);
 
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -96,13 +97,21 @@ body {
   }
 }
 
+/* ---- Focus-visible indicators ---- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 1px solid rgba(240, 193, 75, 0.5);
+  outline-offset: 2px;
+}
+
 /* ---- Input resets ---- */
 input::placeholder {
-  color: rgba(240, 193, 75, 0.25);
+  color: rgba(240, 193, 75, 0.35);
 }
 
 input:focus::placeholder {
-  color: rgba(240, 193, 75, 0.15);
+  color: rgba(240, 193, 75, 0.2);
 }
 
 /* ---- Safe areas for notched devices ---- */
@@ -137,4 +146,10 @@ input:focus::placeholder {
       rgba(3, 7, 17, 0.7) 100%
     );
   }
+}
+
+/* ---- Error toast animation ---- */
+@keyframes fade-in-toast {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }

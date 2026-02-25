@@ -2,9 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface PromptTextProps {
   visible: boolean
+  isAIEnabled?: boolean
 }
 
-export default function PromptText({ visible }: PromptTextProps) {
+export default function PromptText({ visible, isAIEnabled }: PromptTextProps) {
   return (
     <AnimatePresence>
       {visible && (
@@ -29,7 +30,7 @@ export default function PromptText({ visible }: PromptTextProps) {
           {/* Ornamental star */}
           <motion.div
             animate={{
-              opacity: [0.3, 0.8, 0.3],
+              opacity: [0.4, 0.9, 0.4],
               scale: [1, 1.15, 1],
               textShadow: [
                 '0 0 10px rgba(240,193,75,0.3)',
@@ -83,7 +84,7 @@ export default function PromptText({ visible }: PromptTextProps) {
           {/* Decorative line */}
           <motion.div
             animate={{
-              opacity: [0.2, 0.5, 0.2],
+              opacity: [0.3, 0.6, 0.3],
               scaleX: [0.6, 1, 0.6],
             }}
             transition={{
@@ -100,6 +101,34 @@ export default function PromptText({ visible }: PromptTextProps) {
               willChange: 'opacity, transform',
             }}
           />
+
+          {/* Oracle active indicator */}
+          {isAIEnabled && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: [0.45, 0.7, 0.45],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(0.55rem, 1.1vw, 0.65rem)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                color: 'var(--gold-dim)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                marginTop: '0.5rem',
+                willChange: 'opacity',
+              }}
+            >
+              Oracle active
+            </motion.p>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
