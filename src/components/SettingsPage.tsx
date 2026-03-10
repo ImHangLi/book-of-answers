@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useSettings } from '../context/SettingsContext'
-import AbstractBackground from './AbstractBackground'
-import ParticleField from './ParticleField'
 
 export default function SettingsPage() {
   const { apiKey, isAIEnabled, setProvider, setApiKey, clearApiKey } = useSettings()
@@ -34,7 +32,6 @@ export default function SettingsPage() {
     const trimmed = localKey.trim()
     if (!trimmed) return
 
-    // Auto-detect provider
     if (trimmed.startsWith('sk-ant-')) {
       setProvider('anthropic')
     } else {
@@ -43,7 +40,6 @@ export default function SettingsPage() {
 
     setApiKey(trimmed)
     setLocalKey('')
-    // Go back to main page after connecting
     window.location.hash = ''
   }, [localKey, setApiKey, setProvider])
 
@@ -69,87 +65,45 @@ export default function SettingsPage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
+      className="container"
+      style={{ paddingTop: '1rem' }}
     >
-      {/* Shared background layers */}
-      <AbstractBackground />
-      <ParticleField />
-
-      {/* Back link — top left */}
+      {/* Back link */}
       <motion.a
         href="#"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
         onClick={(e) => {
           e.preventDefault()
           window.location.hash = ''
         }}
         style={{
-          position: 'absolute',
-          top: 'clamp(1.2rem, 3vw, 2rem)',
-          left: 'clamp(1.2rem, 3vw, 2rem)',
-          zIndex: 12,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.4rem',
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
           fontStyle: 'italic',
-          color: 'var(--gold-dim)',
-          letterSpacing: '0.08em',
+          color: 'var(--text-mid)',
+          letterSpacing: '0.06em',
           textDecoration: 'none',
           transition: 'color 0.3s ease',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.4rem',
+          marginBottom: '3rem',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--gold-bright)')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--gold-dim)')}
+        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
       >
         <span style={{ fontSize: '0.8em' }}>←</span> Return to the book
       </motion.a>
 
       {/* Central content */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          position: 'relative',
-          zIndex: 11,
-          textAlign: 'center',
-          maxWidth: 'min(420px, 88vw)',
-          width: '100%',
-          padding: 'clamp(1.5rem, 5vw, 2.5rem)',
-        }}
+        style={{ maxWidth: '420px' }}
       >
-        {/* Star ornament */}
-        <motion.div
-          animate={{
-            opacity: [0.4, 0.8, 0.4],
-            textShadow: [
-              '0 0 8px rgba(240,193,75,0.3)',
-              '0 0 20px rgba(240,193,75,0.6)',
-              '0 0 8px rgba(240,193,75,0.3)',
-            ],
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            color: 'var(--gold-bright)',
-            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-            marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)',
-          }}
-        >
-          ✦
-        </motion.div>
-
         {/* Title */}
         <h1
           style={{
@@ -157,7 +111,7 @@ export default function SettingsPage() {
             fontSize: 'clamp(1.3rem, 3.5vw, 1.8rem)',
             fontWeight: 400,
             fontStyle: 'italic',
-            color: 'var(--cream)',
+            color: 'var(--text)',
             letterSpacing: '0.04em',
             margin: '0 0 0.5rem',
           }}
@@ -170,9 +124,9 @@ export default function SettingsPage() {
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
-            color: 'var(--cream-dim)',
-            letterSpacing: '0.06em',
-            margin: '0 0 clamp(1.5rem, 3vw, 2rem)',
+            color: 'var(--text-mid)',
+            letterSpacing: '0.04em',
+            margin: '0 0 2rem',
             lineHeight: 1.6,
           }}
         >
@@ -182,25 +136,18 @@ export default function SettingsPage() {
         </p>
 
         {/* Divider */}
-        <div
-          style={{
-            height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(240, 193, 75, 0.2), transparent)',
-            marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
-          }}
-        />
+        <div style={{ height: '1px', background: 'var(--line)', marginBottom: '2rem' }} />
 
         {isAIEnabled ? (
           /* ---- Connected state ---- */
           <div>
-            {/* Masked key display */}
             <div
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(0.8rem, 1.6vw, 0.9rem)',
-                color: 'var(--cream-dim)',
-                letterSpacing: '0.12em',
-                marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
+                color: 'var(--text-mid)',
+                letterSpacing: '0.08em',
+                marginBottom: '2rem',
                 wordBreak: 'break-all',
               }}
             >
@@ -214,46 +161,45 @@ export default function SettingsPage() {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--gold-dim)',
+                  color: 'var(--text-mid)',
                   cursor: 'pointer',
                   fontSize: '0.7rem',
                   padding: '0 0 0 0.5rem',
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.06em',
                   transition: 'color 0.2s ease',
                   verticalAlign: 'middle',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--gold-bright)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--gold-dim)')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
               >
                 {showKey ? 'hide' : 'show'}
               </button>
             </div>
 
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button
                 onClick={handleDisconnect}
                 style={{
-                  padding: '0.55rem 1.4rem',
-                  border: '1px solid rgba(255, 100, 100, 0.2)',
-                  borderRadius: '6px',
-                  background: 'rgba(255, 80, 80, 0.06)',
+                  padding: '0.5rem 1.4rem',
+                  border: '1px solid rgba(180, 60, 60, 0.3)',
+                  borderRadius: '50px',
+                  background: 'transparent',
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: 'clamp(0.8rem, 1.6vw, 0.9rem)',
                   fontStyle: 'italic',
-                  color: 'rgba(255, 140, 140, 0.8)',
+                  color: 'rgba(180, 60, 60, 0.8)',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   letterSpacing: '0.04em',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 80, 80, 0.12)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 100, 100, 0.35)'
+                  e.currentTarget.style.background = 'rgba(180, 60, 60, 0.08)'
+                  e.currentTarget.style.borderColor = 'rgba(180, 60, 60, 0.5)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 80, 80, 0.06)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 100, 100, 0.2)'
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.borderColor = 'rgba(180, 60, 60, 0.3)'
                 }}
               >
                 Disconnect
@@ -261,25 +207,25 @@ export default function SettingsPage() {
               <button
                 onClick={() => (window.location.hash = '')}
                 style={{
-                  padding: '0.55rem 1.4rem',
-                  border: '1px solid rgba(240, 193, 75, 0.2)',
-                  borderRadius: '6px',
-                  background: 'rgba(240, 193, 75, 0.06)',
+                  padding: '0.5rem 1.4rem',
+                  border: '1px solid var(--text)',
+                  borderRadius: '50px',
+                  background: 'transparent',
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: 'clamp(0.8rem, 1.6vw, 0.9rem)',
                   fontStyle: 'italic',
-                  color: 'var(--gold-mid)',
+                  color: 'var(--text)',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   letterSpacing: '0.04em',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(240, 193, 75, 0.12)'
-                  e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.35)'
+                  e.currentTarget.style.background = 'var(--text)'
+                  e.currentTarget.style.color = 'var(--bg)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(240, 193, 75, 0.06)'
-                  e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.2)'
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = 'var(--text)'
                 }}
               >
                 Return
@@ -305,22 +251,18 @@ export default function SettingsPage() {
                   padding: '0.7rem 2.2rem 0.7rem 0',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: '1px solid rgba(240, 193, 75, 0.25)',
+                  borderBottom: '1px solid var(--line)',
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: 'clamp(0.85rem, 1.8vw, 1rem)',
                   fontStyle: 'italic',
-                  color: 'var(--cream)',
-                  textAlign: 'center',
+                  color: 'var(--text)',
+                  textAlign: 'left',
                   outline: 'none',
                   transition: 'border-color 0.3s ease',
-                  caretColor: 'var(--gold-bright)',
+                  caretColor: 'var(--text)',
                 }}
-                onFocus={(e) =>
-                  (e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.45)')
-                }
-                onBlur={(e) =>
-                  (e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.25)')
-                }
+                onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--text)')}
+                onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--line)')}
               />
               {localKey && (
                 <button
@@ -334,7 +276,7 @@ export default function SettingsPage() {
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
-                    color: 'var(--cream-dim)',
+                    color: 'var(--text-mid)',
                     cursor: 'pointer',
                     fontSize: '0.7rem',
                     padding: '4px',
@@ -342,22 +284,21 @@ export default function SettingsPage() {
                     letterSpacing: '0.06em',
                     transition: 'color 0.2s ease',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--cream)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--cream-dim)')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
                 >
                   {showKey ? 'hide' : 'show'}
                 </button>
               )}
             </div>
 
-            {/* Hint text */}
             <p
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(0.65rem, 1.3vw, 0.75rem)',
-                color: 'var(--cream-dim)',
-                letterSpacing: '0.08em',
-                marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
+                color: 'var(--text-dim)',
+                letterSpacing: '0.06em',
+                marginBottom: '2rem',
                 fontStyle: 'italic',
               }}
             >
@@ -366,39 +307,32 @@ export default function SettingsPage() {
                 : 'Stored in this browser only. Never sent to our servers.'}
             </p>
 
-            {/* Connect button */}
             <button
               onClick={handleConnect}
               disabled={!localKey.trim()}
               style={{
-                padding: '0.55rem 2rem',
-                border: `1px solid ${
-                  localKey.trim()
-                    ? 'rgba(240, 193, 75, 0.3)'
-                    : 'rgba(255, 255, 255, 0.08)'
-                }`,
-                borderRadius: '6px',
-                background: localKey.trim()
-                  ? 'rgba(240, 193, 75, 0.08)'
-                  : 'transparent',
+                padding: '0.5rem 1.8rem',
+                border: `1px solid ${localKey.trim() ? 'var(--text)' : 'var(--line)'}`,
+                borderRadius: '50px',
+                background: 'transparent',
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: 'clamp(0.8rem, 1.6vw, 0.9rem)',
                 fontStyle: 'italic',
-                color: localKey.trim() ? 'var(--gold-bright)' : 'var(--cream-dim)',
+                color: localKey.trim() ? 'var(--text)' : 'var(--text-dim)',
                 cursor: localKey.trim() ? 'pointer' : 'default',
                 transition: 'all 0.3s ease',
                 letterSpacing: '0.06em',
               }}
               onMouseEnter={(e) => {
                 if (localKey.trim()) {
-                  e.currentTarget.style.background = 'rgba(240, 193, 75, 0.15)'
-                  e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.45)'
+                  e.currentTarget.style.background = 'var(--text)'
+                  e.currentTarget.style.color = 'var(--bg)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (localKey.trim()) {
-                  e.currentTarget.style.background = 'rgba(240, 193, 75, 0.08)'
-                  e.currentTarget.style.borderColor = 'rgba(240, 193, 75, 0.3)'
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = 'var(--text)'
                 }
               }}
             >
@@ -407,14 +341,13 @@ export default function SettingsPage() {
           </div>
         )}
 
-        {/* Security notice */}
         <p
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontSize: 'clamp(0.6rem, 1.2vw, 0.7rem)',
-            color: 'var(--text-ghost)',
+            color: 'var(--text-dim)',
             letterSpacing: '0.06em',
-            marginTop: 'clamp(1.5rem, 3vw, 2rem)',
+            marginTop: '2rem',
             lineHeight: 1.5,
           }}
         >

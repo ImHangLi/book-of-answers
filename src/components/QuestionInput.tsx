@@ -12,7 +12,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
 
   useEffect(() => {
     if (visible) {
-      const timer = setTimeout(() => inputRef.current?.focus(), 800)
+      const timer = setTimeout(() => inputRef.current?.focus(), 600)
       return () => clearTimeout(timer)
     }
   }, [visible])
@@ -31,98 +31,57 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -15 }}
+          exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 4,
-            padding: 'clamp(1rem, 4vw, 2rem)',
-            marginTop: 'clamp(2vh, 4vh, 6vh)',
-          }}
         >
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '100%',
-              maxWidth: 'min(520px, 90vw)',
-            }}
-          >
-            {/* Naked input — the typography IS the interface */}
+          <form onSubmit={handleSubmit}>
             <input
               ref={inputRef}
               type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Type your question..."
+              placeholder="Inscribe your inquiry..."
               autoComplete="off"
               aria-label="Type your question"
               style={{
                 width: '100%',
                 background: 'transparent',
                 border: 'none',
+                borderBottom: '1px solid var(--text)',
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: 'clamp(1.2rem, 3.5vw, 2rem)',
+                fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
                 fontWeight: 300,
                 fontStyle: 'italic',
-                color: 'var(--cream)',
-                textAlign: 'center',
-                padding: '0.8rem 0',
+                color: 'var(--text)',
+                textAlign: 'left',
+                padding: '0.5rem 0',
                 outline: 'none',
-                caretColor: 'var(--gold-bright)',
-                letterSpacing: '0.02em',
-              }}
-            />
-
-            {/* Single gold line — the only visual anchor */}
-            <motion.div
-              animate={{
-                opacity: question.length > 0 ? 1 : 0.25,
-                scaleX: question.length > 0 ? 1 : 0.4,
-              }}
-              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{
-                width: '100%',
-                maxWidth: question.length > 0 ? '280px' : '120px',
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, var(--gold-bright), transparent)',
-                transformOrigin: 'center',
-                filter: question.length > 0
-                  ? 'drop-shadow(0 0 8px rgba(240, 193, 75, 0.5))'
-                  : 'none',
-                transition: 'max-width 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                caretColor: 'var(--text)',
+                letterSpacing: '0.01em',
               }}
             />
 
             {/* Submit hint */}
-            <div style={{ height: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <motion.p
-                animate={{
-                  opacity: question.trim().length > 0 ? 0.7 : 0,
-                }}
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)',
-                  fontWeight: 300,
-                  fontStyle: 'italic',
-                  color: 'var(--gold-dim)',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Press Enter to receive your answer
-              </motion.p>
-            </div>
+            <motion.p
+              animate={{
+                opacity: question.trim().length > 0 ? 0.4 : 0,
+              }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(0.7rem, 1.5vw, 0.85rem)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                color: 'var(--text)',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                marginTop: '0.75rem',
+              }}
+            >
+              Press return to seek
+            </motion.p>
           </form>
         </motion.div>
       )}

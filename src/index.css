@@ -7,85 +7,49 @@
 }
 
 :root {
-  /* Deepened palette — maximum contrast */
-  --bg-void: #030711;
-  --bg-deep: #060b1a;
-  --navy-deep: #080d20;
-  --navy-mid: #0e1530;
+  --bg: #f3f1f1;
+  --text: #121212;
+  --line: #cfcbcb;
+  --text-dim: rgba(18, 18, 18, 0.3);
+  --text-mid: rgba(18, 18, 18, 0.5);
 
-  /* Brighter, more luminous gold */
-  --gold-100: #fef3c7;
-  --gold-200: #fde68a;
-  --gold-300: #fcd34d;
-  --gold-bright: #f0c14b;
-  --gold-mid: #d4a853;
-  --gold-dim: #b8923e;
-  --gold-glow: rgba(240, 193, 75, 0.25);
-  --gold-glow-strong: rgba(240, 193, 75, 0.5);
-
-  /* High-contrast text */
-  --cream: #faf5eb;
-  --cream-soft: #f0e6d3;
-  --cream-dim: rgba(250, 245, 235, 0.7);
-  --text-ghost: rgba(250, 245, 235, 0.35);
-
-  color-scheme: dark;
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #root {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 html {
-  /* Prevent iOS bounce/overscroll */
   overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
 }
 
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  background-color: var(--bg-void);
-  color: var(--cream);
-  /* Prevent pull-to-refresh on mobile */
+  background-color: var(--bg);
+  color: var(--text);
   overscroll-behavior-y: contain;
   touch-action: manipulation;
+  display: flex;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 ::selection {
-  background: var(--gold-glow);
-  color: var(--gold-bright);
-}
-
-/* ---- Film grain overlay ---- */
-#root::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---- Vignette overlay ---- */
-#root::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 40%,
-    rgba(3, 7, 17, 0.5) 70%,
-    rgba(3, 7, 17, 0.85) 100%
-  );
+  background: rgba(18, 18, 18, 0.12);
+  color: var(--text);
 }
 
 /* ---- Reduced motion ---- */
@@ -101,17 +65,29 @@ body {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 1px solid rgba(240, 193, 75, 0.5);
+  outline: 1px solid var(--text);
   outline-offset: 2px;
 }
 
 /* ---- Input resets ---- */
 input::placeholder {
-  color: rgba(240, 193, 75, 0.35);
+  color: var(--text-dim);
 }
 
 input:focus::placeholder {
-  color: rgba(240, 193, 75, 0.2);
+  color: rgba(18, 18, 18, 0.15);
+}
+
+/* ---- Container ---- */
+.container {
+  max-width: 680px;
+  width: 100%;
+}
+
+/* ---- Error toast animation ---- */
+@keyframes fade-in-toast {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* ---- Safe areas for notched devices ---- */
@@ -123,33 +99,9 @@ input:focus::placeholder {
   }
 }
 
-/* ---- Mobile-specific tweaks ---- */
-@media (max-width: 480px) {
-  #root::after {
-    /* Softer vignette on small screens so edges aren't too dark */
-    background: radial-gradient(
-      ellipse at center,
-      transparent 35%,
-      rgba(3, 7, 17, 0.4) 65%,
-      rgba(3, 7, 17, 0.75) 100%
-    );
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  body {
+    padding: 2.5rem 1.25rem;
   }
-}
-
-/* ---- Landscape phone ---- */
-@media (max-height: 500px) and (orientation: landscape) {
-  #root::after {
-    background: radial-gradient(
-      ellipse at center,
-      transparent 30%,
-      rgba(3, 7, 17, 0.35) 60%,
-      rgba(3, 7, 17, 0.7) 100%
-    );
-  }
-}
-
-/* ---- Error toast animation ---- */
-@keyframes fade-in-toast {
-  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
