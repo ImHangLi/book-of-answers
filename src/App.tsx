@@ -136,6 +136,7 @@ export default function App() {
     setCurrentAnswer(item.answer)
     setCurrentQuestion(item.question)
     setPhase('answered')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
 
   // Auto-dismiss error toast
