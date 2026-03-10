@@ -10,8 +10,8 @@
   --bg: #f3f1f1;
   --text: #121212;
   --line: #cfcbcb;
-  --text-dim: rgba(18, 18, 18, 0.3);
-  --text-mid: rgba(18, 18, 18, 0.5);
+  --text-dim: rgba(18, 18, 18, 0.55);
+  --text-mid: rgba(18, 18, 18, 0.68);
 
   color-scheme: light;
   font-synthesis: none;
@@ -61,12 +61,72 @@ body {
   }
 }
 
+/* ---- Interactive hover classes ---- */
+.hover-opacity-full {
+  transition: opacity 0.3s ease;
+}
+.hover-opacity-full:hover,
+.hover-opacity-full:focus-visible {
+  opacity: 1 !important;
+}
+
+.hover-opacity-dim {
+  transition: opacity 0.2s ease;
+}
+.hover-opacity-dim:hover,
+.hover-opacity-dim:focus-visible {
+  opacity: 0.6 !important;
+}
+
+.hover-text-color {
+  transition: color 0.3s ease;
+}
+.hover-text-color:hover,
+.hover-text-color:focus-visible {
+  color: var(--text) !important;
+}
+
+.hover-fill {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.hover-fill:hover,
+.hover-fill:focus-visible {
+  background: var(--text) !important;
+  color: var(--bg) !important;
+}
+
+.hover-danger {
+  transition: all 0.3s ease;
+}
+.hover-danger:hover,
+.hover-danger:focus-visible {
+  background: rgba(180, 60, 60, 0.08) !important;
+  border-color: rgba(180, 60, 60, 0.5) !important;
+}
+
+/* ---- Touch target sizes ---- */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ---- Focus-visible indicators ---- */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
   outline: 1px solid var(--text);
   outline-offset: 2px;
+}
+
+/* ---- Settings input focus ---- */
+input[aria-label="API key"] {
+  transition: border-color 0.3s ease;
+}
+input[aria-label="API key"]:focus {
+  border-color: var(--text) !important;
 }
 
 /* ---- Input resets ---- */
@@ -82,6 +142,15 @@ input:focus::placeholder {
 .container {
   max-width: 680px;
   width: 100%;
+}
+
+/* ---- Shake animation for empty submit ---- */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
 }
 
 /* ---- Error toast animation ---- */

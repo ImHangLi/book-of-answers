@@ -39,7 +39,7 @@ export default function HistoryList({ items, onItemClick }: HistoryListProps) {
       <div style={{ borderTop: '1px solid var(--line)' }}>
         {items.map((item, index) => (
           <motion.button
-            key={`${item.question}-${index}`}
+            key={`history-${index}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -48,11 +48,14 @@ export default function HistoryList({ items, onItemClick }: HistoryListProps) {
               ease: [0.25, 0.1, 0.25, 1],
             }}
             onClick={() => onItemClick(item)}
+            aria-label={`View answer for: ${item.question}`}
+            className="hover-opacity-dim"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               width: '100%',
+              minHeight: '44px',
               padding: '0.9rem 0',
               background: 'transparent',
               border: 'none',
@@ -65,10 +68,7 @@ export default function HistoryList({ items, onItemClick }: HistoryListProps) {
               fontStyle: 'italic',
               color: 'var(--text)',
               letterSpacing: '0.02em',
-              transition: 'opacity 0.2s ease',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.6')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
             <span>{item.question}</span>
             <svg

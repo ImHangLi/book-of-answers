@@ -8,6 +8,7 @@ interface QuestionInputProps {
 
 export default function QuestionInput({ visible, onSubmit }: QuestionInputProps) {
   const [question, setQuestion] = useState('')
+  const [shake, setShake] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -20,7 +21,12 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault()
-      if (!question.trim()) return
+      if (!question.trim()) {
+        setShake(true)
+        setTimeout(() => setShake(false), 500)
+        inputRef.current?.focus()
+        return
+      }
       onSubmit(question)
       setQuestion('')
     },
@@ -46,6 +52,7 @@ export default function QuestionInput({ visible, onSubmit }: QuestionInputProps)
               autoComplete="off"
               aria-label="Type your question"
               style={{
+                animation: shake ? 'shake 0.4s ease-in-out' : undefined,
                 width: '100%',
                 background: 'transparent',
                 border: 'none',

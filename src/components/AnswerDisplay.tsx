@@ -20,7 +20,7 @@ export default function AnswerDisplay({
       {isVisible && (
         <motion.div
           key={isContemplating ? 'contemplating' : answer}
-          initial={{ opacity: 0, filter: 'blur(16px)' }}
+          initial={{ opacity: 0, filter: 'blur(8px)' }}
           animate={{ opacity: 1, filter: 'blur(0px)' }}
           exit={{
             opacity: 0,
@@ -111,6 +111,7 @@ export default function AnswerDisplay({
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
                 onClick={onAskAgain}
+                className="hover-fill"
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
@@ -123,15 +124,6 @@ export default function AnswerDisplay({
                   borderRadius: '50px',
                   padding: '0.5rem 1.8rem',
                   cursor: 'pointer',
-                  transition: 'background 0.3s ease, color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--text)'
-                  e.currentTarget.style.color = 'var(--bg)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'var(--text)'
                 }}
               >
                 Ask Again

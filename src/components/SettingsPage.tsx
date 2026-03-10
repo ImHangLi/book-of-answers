@@ -88,11 +88,9 @@ export default function SettingsPage() {
           color: 'var(--text-mid)',
           letterSpacing: '0.06em',
           textDecoration: 'none',
-          transition: 'color 0.3s ease',
           marginBottom: '3rem',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
+        className="hover-text-color"
       >
         <span style={{ fontSize: '0.8em' }}>←</span> Return to the book
       </motion.a>
@@ -153,7 +151,7 @@ export default function SettingsPage() {
             >
               {showKey
                 ? apiKey
-                : `${apiKey.slice(0, 7)}${'•'.repeat(Math.min(apiKey.length - 11, 20))}${apiKey.slice(-4)}`}
+                : `${apiKey.slice(0, 7)}${'•'.repeat(Math.max(0, Math.min(apiKey.length - 11, 20)))}${apiKey.slice(-4)}`}
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
@@ -167,11 +165,9 @@ export default function SettingsPage() {
                   padding: '0 0 0 0.5rem',
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   letterSpacing: '0.06em',
-                  transition: 'color 0.2s ease',
                   verticalAlign: 'middle',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
+                className="hover-text-color"
               >
                 {showKey ? 'hide' : 'show'}
               </button>
@@ -180,6 +176,7 @@ export default function SettingsPage() {
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button
                 onClick={handleDisconnect}
+                className="hover-danger"
                 style={{
                   padding: '0.5rem 1.4rem',
                   border: '1px solid rgba(180, 60, 60, 0.3)',
@@ -190,22 +187,14 @@ export default function SettingsPage() {
                   fontStyle: 'italic',
                   color: 'rgba(180, 60, 60, 0.8)',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease',
                   letterSpacing: '0.04em',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(180, 60, 60, 0.08)'
-                  e.currentTarget.style.borderColor = 'rgba(180, 60, 60, 0.5)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.borderColor = 'rgba(180, 60, 60, 0.3)'
                 }}
               >
                 Disconnect
               </button>
               <button
                 onClick={() => (window.location.hash = '')}
+                className="hover-fill"
                 style={{
                   padding: '0.5rem 1.4rem',
                   border: '1px solid var(--text)',
@@ -216,16 +205,7 @@ export default function SettingsPage() {
                   fontStyle: 'italic',
                   color: 'var(--text)',
                   cursor: 'pointer',
-                  transition: 'all 0.3s ease',
                   letterSpacing: '0.04em',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--text)'
-                  e.currentTarget.style.color = 'var(--bg)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'var(--text)'
                 }}
               >
                 Return
@@ -258,11 +238,8 @@ export default function SettingsPage() {
                   color: 'var(--text)',
                   textAlign: 'left',
                   outline: 'none',
-                  transition: 'border-color 0.3s ease',
                   caretColor: 'var(--text)',
                 }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--text)')}
-                onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--line)')}
               />
               {localKey && (
                 <button
@@ -282,10 +259,8 @@ export default function SettingsPage() {
                     padding: '4px',
                     fontFamily: "'Cormorant Garamond', Georgia, serif",
                     letterSpacing: '0.06em',
-                    transition: 'color 0.2s ease',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
+                  className="hover-text-color"
                 >
                   {showKey ? 'hide' : 'show'}
                 </button>
@@ -310,6 +285,7 @@ export default function SettingsPage() {
             <button
               onClick={handleConnect}
               disabled={!localKey.trim()}
+              className={localKey.trim() ? 'hover-fill' : undefined}
               style={{
                 padding: '0.5rem 1.8rem',
                 border: `1px solid ${localKey.trim() ? 'var(--text)' : 'var(--line)'}`,
@@ -320,20 +296,7 @@ export default function SettingsPage() {
                 fontStyle: 'italic',
                 color: localKey.trim() ? 'var(--text)' : 'var(--text-dim)',
                 cursor: localKey.trim() ? 'pointer' : 'default',
-                transition: 'all 0.3s ease',
                 letterSpacing: '0.06em',
-              }}
-              onMouseEnter={(e) => {
-                if (localKey.trim()) {
-                  e.currentTarget.style.background = 'var(--text)'
-                  e.currentTarget.style.color = 'var(--bg)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (localKey.trim()) {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'var(--text)'
-                }
               }}
             >
               Connect
